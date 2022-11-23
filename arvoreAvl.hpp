@@ -173,4 +173,15 @@
       }
   };
 
+  void ler(No* no, int profundidade) {
+    if(no) {
+      ler(no->esq, (profundidade + 1));
+      for(int i=0; i < (this->raiz->altura - profundidade); i++){
+        printf("    ");
+      }
+      printf("%d\n", no->valor);
+      ler(no->dir, (profundidade + 1));
+    }
+  };
+
 };
