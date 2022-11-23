@@ -82,4 +82,47 @@
       return rotEsq(raiz);
   }
 
+  No* balancear (No* no) {
+    int fatorBalanceamento = calcFatorBalanceamento(no);
+
+    if(fatorBalanceamento < -1)
+      if(calcFatorBalanceamento(no->dir) <= 0)
+        no= rotEsq(no);
+      else
+        no= rotDirEsq(no);
+    else if(fatorBalanceamento > 1){
+      if (calcFatorBalanceamento(no->esq) >= 0)
+        no= rotDir(no);
+      else
+        no= rotEsqDir(no);
+    }
+
+    return no;
+    
+  };
+
+  void inserir (int valor, No* no) {
+    
+    if(no->valor > valor){
+      if(no->esq == NULL){
+        No* novoNo = new No{.valor = valor, .esq = NULL, .dir = NULL, .altura = 0};
+        no->esq = novoNo;
+      } else {
+        inserir( valor, no->esq);
+      }
+    } else {
+      if(no->dir == NULL){
+        No* novoNo = new No{.valor = valor, .esq = NULL, .dir = NULL, .altura = 0};
+        no->dir = novoNo;
+      } else {
+        inserir( valor, no->dir);
+      }
+    }
+    
+    no->altura = maior(calcAltura(no->esq), calcAltura(no->dir)) + 1;
+
+    no = balancear(no);
+    
+  };
+
 };
