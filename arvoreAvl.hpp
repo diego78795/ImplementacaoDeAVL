@@ -125,4 +125,52 @@
     
   };
 
+  No* remover(int valor, No *raiz) {
+      if(raiz == NULL){
+          printf("Valor nao encontrado!\n");
+          return NULL;
+      } else {
+          if(raiz->valor == valor) {
+              if(raiz->esq == NULL && raiz->dir == NULL) {
+                  free(raiz);
+                  printf("Elemento folha removido: %d !\n", valor);
+                  return NULL;
+              }
+              else{
+                  if(raiz->esq != NULL && raiz->dir != NULL){
+                      No *aux = raiz->esq;
+                      while(aux->dir != NULL)
+                          aux = aux->dir;
+                      raiz->valor = aux->valor;
+                      aux->valor = valor;
+                      printf("Elemento trocado: %d !\n", valor);
+                      raiz->esq = remover(valor, raiz->esq);
+                      return raiz;
+                  }
+                  else{
+                      No *aux;
+                      if(raiz->esq != NULL)
+                          aux = raiz->esq;
+                      else
+                          aux = raiz->dir;
+                      free(raiz);
+                      printf("Elemento com 1 filho removido: %d !\n", valor);
+                      return aux;
+                  }
+              }
+          } else {
+              if(valor < raiz->valor)
+                  raiz->esq = remover(valor, raiz->esq);
+              else
+                  raiz->dir = remover(valor, raiz->dir);
+          }
+  
+          raiz->altura = maior(calcAltura(raiz->esq), calcAltura(raiz->dir)) + 1;
+  
+          raiz = balancear(raiz);
+  
+          return raiz;
+      }
+  };
+
 };
